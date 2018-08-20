@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".VideoPreviewActivity">
+
+
+    <com.example.achp.videotrimmersample.components.AspectSurfaceView
+        android:id="@+id/video_preview_surface_view"
+        android:layout_width="match_parent"
+        android:layout_height="215dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:xRatio="16"
+        app:yRatio="9" />
+
+    <com.example.mediatrimmer.RangeSeekBarView
+        android:id="@+id/range_seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/video_preview_surface_view" />
+
+    <TextView
+        android:id="@+id/seek_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/video_preview_surface_view" />
+
+    <TextView
+        android:id="@+id/start_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/seek_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/seek_text_view" />
+
+    <TextView
+        android:id="@+id/stop_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/start_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/start_text_view" />
+
+    <TextView
+        android:id="@+id/progress_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/video_preview_surface_view" />
+</android.support.constraint.ConstraintLayout>
