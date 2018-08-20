@@ -3,6 +3,6 @@ AndroidVideoTrimmer is a customizable UI component you can use in your applicati
 For now, this project do not contains the video trimmer itself (like ffmpeg).
 You are free to use whatever solution you want to cut/trim your video
 
-###Demo :
-![demo](https://i.imgur.com/HGbk5Qb.gif)
+### Demo
+<img src="https://i.imgur.com/HGbk5Qb.gif" alt="demo" width="200px"/>
 
