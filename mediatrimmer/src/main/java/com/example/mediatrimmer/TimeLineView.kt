@@ -10,6 +10,8 @@ import android.net.Uri
 import android.util.AttributeSet
 import android.util.LongSparseArray
 import android.view.View
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import kotlin.properties.Delegates
 
@@ -60,7 +62,10 @@ class TimeLineView @JvmOverloads constructor(
         imageSplitterPaint.color  = imageSplitterColor
         imageSplitterPaint.alpha  = imageSplitterAlpha
         imageSplitterPaint.strokeWidth  = imageSplitterWidth.toFloat()
+        setWillNotDraw(false)
+
     }
+
 
     /**
      * Methods to set the onReady callback
@@ -82,18 +87,19 @@ class TimeLineView @JvmOverloads constructor(
 
         //If height has changed, re-generate bitmap list asynchronously
         if (w != oldW) {
-            launch {
-                mBitmapList =  getBitmap(w)
-            }
+
+                mBitmapList.clear()
+                launch { getBitmap(w) }
+
         }
     }
 
+
+    var mBitmapLst = LongSparseArray<Bitmap>()
     /**
      * This function is used to process the video and return a number of key frames of this video
      */
-    private fun getBitmap(viewWidth: Int): LongSparseArray<Bitmap> {
-
-        val thumbnailList = LongSparseArray<Bitmap>()
+    private suspend fun getBitmap(viewWidth: Int): Unit {
 
         val mediaMetadataRetriever = MediaMetadataRetriever()
         mediaMetadataRetriever.setDataSource(context, videoSource)
@@ -101,6 +107,8 @@ class TimeLineView @JvmOverloads constructor(
         // Retrieve media data
         val videoLengthInMsImmutable = (Integer.parseInt(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) * 1000).toLong()
         videoLengthInMs = videoLengthInMsImmutable
+
+
 
         val firstBitmap = mediaMetadataRetriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_PREVIOUS_SYNC)
 
@@ -126,15 +134,18 @@ class TimeLineView @JvmOverloads constructor(
                 Bitmap.createBitmap(bitmap, (thumbWidth/2) - (finalThumbWidth/2),0,thumbHeight, thumbHeight)
             }
 
-            thumbnailList.put(i.toLong(), bitmap)
+            mBitmapList.put(i.toLong(), bitmap)
+
+            println("postInvalidate")
+            postInvalidate()
+
         }
 
-        postInvalidate()
+
         onReadyFunction?.invoke()
 
         mediaMetadataRetriever.release()
 
-        return thumbnailList
     }
 
 
@@ -145,24 +156,30 @@ class TimeLineView @JvmOverloads constructor(
         imageSplitterPaint.alpha = imageSplitterAlpha
     }
 
+    var xx:Int = 50
+    var p = Paint().also {
+        it.color = Color.RED
+        it.strokeWidth = dip(10).toFloat()
+    }
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        canvas.save()
+        println("ON DRAW !! left :$left")
+//        canvas.save()
         var x = 0
 
         for (i in 0 until mBitmapList.size()) {
             val bitmap = mBitmapList.get(i.toLong())
 
             if (bitmap != null) {
-                canvas.drawBitmap(bitmap, left+x.toFloat(), 0f, null)
+                canvas.drawBitmap(bitmap, x.toFloat(), 0f, null)
 
                 //If image splitter is enabled we draw it
                 if(enableSplitter && x > 0){
                     canvas.drawLine(
-                            left+x.toFloat(),
+                            x.toFloat(),
                             0f,
-                            left+x.toFloat(),
+                            x.toFloat(),
                             bitmap.height.toFloat(),
                             imageSplitterPaint
                     )

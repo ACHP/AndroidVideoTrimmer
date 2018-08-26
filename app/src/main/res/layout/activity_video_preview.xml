@@ -17,14 +17,17 @@
         app:xRatio="16"
         app:yRatio="9" />
 
-    <com.example.mediatrimmer.RangeSeekBarView
-        android:id="@+id/range_seek_bar"
-        android:layout_width="match_parent"
+    <com.example.mediatrimmer.VideoTrimmer
+        android:id="@+id/custom_viewgroup"
+        android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/video_preview_surface_view" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stop_text_view" />
+
 
     <TextView
         android:id="@+id/seek_text_view"
@@ -64,3 +67,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/video_preview_surface_view" />
 </android.support.constraint.ConstraintLayout>
+
+
+
+

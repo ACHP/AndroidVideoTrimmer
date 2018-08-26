@@ -5,17 +5,16 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
+import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Looper
-import android.provider.Contacts
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import kotlinx.coroutines.experimental.async
 import java.util.*
 import kotlin.properties.Delegates
 
-interface OnRangeSeekBarListener {
+interface VideoTrimmerListener {
 
     fun startChanged(startTime:Long)
     fun stopChanged(endTime:Long)
@@ -33,7 +32,7 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
 
 
     //listener permettant d'écouter les event onSeek, onSeekStart, on seekStop, etc...
-    private var mListeners: MutableList<OnRangeSeekBarListener>? = null
+    private var mListeners: MutableList<VideoTrimmerListener>? = null
 
     //taille du grip/thumb gauche
     private var mThumbWidth: Float = 0.toFloat()
@@ -85,8 +84,6 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
 
 
 
-
-
     //infos sur le curseur
     private object cursorInfos{
         var minCursorPos:Long = 0
@@ -110,7 +107,14 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
     //Méthode permettant de set l'uri
     fun setVideo(data: Uri) {
         mVideoUri = data
-        timelineView.videoSource = data
+
+        val mediaMetadataRetriever = MediaMetadataRetriever()
+        mediaMetadataRetriever.setDataSource(context, data)
+
+        // Retrieve media data
+        videoInfos.duration = (Integer.parseInt(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) * 1000).toLong()
+        videoInfos.path = data.toString()
+
     }
 
     //progression de la video en ms
@@ -119,10 +123,6 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
             field = currentTime
             updateCursorProgress(currentTime)
         }
-
-
-    //La timeline contenant les miniatures de preview
-    var timelineView:TimeLineView = TimeLineView(context, attrs, defStyleAttr)
 
     init {
 
@@ -136,24 +136,9 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
         isFocusableInTouchMode = true
         mFirstRun = true
 
-        defineListeners()
 
     }
 
-
-    /**
-     * Méthode permettant de définir les listeners
-     */
-    private fun defineListeners(){
-        //Quand la timeline est ready, on invalide la vue et on récupère la taille de la vidéo
-        timelineView.setOnReady {
-            postInvalidate()
-            videoInfos.duration = timelineView.videoLengthInMs ?: throw Exception("La taille de la vidéo est inconnue")
-            notifyStopChanged()
-        }
-
-
-    }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -215,7 +200,6 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        drawTimeline(canvas)
         drawShadow(canvas)
         drawThumbs(canvas)
         drawBorder(canvas)
@@ -489,13 +473,6 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
         }
     }
 
-    /**
-     * Méthode permettant de dessiner la timeline
-     */
-    private fun drawTimeline(canvas:Canvas){
-        timelineView.layout(timelinePaddingLeft.toInt(),0,canvas.width-timelinePaddingRight.toInt(), canvas.height)
-        timelineView.draw(canvas)
-    }
 
     /**
      * Méthode permettant de dessiner les bordures autour de la partie de la vidéo non trimé
@@ -529,10 +506,10 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
     /**
      * Méthode permettant d'ajoute un listener
      */
-    fun addOnRangeSeekBarListener(listener: OnRangeSeekBarListener) {
+    fun addOnRangeSeekBarListener(listener: VideoTrimmerListener) {
 
         if (mListeners == null) {
-            mListeners = ArrayList<OnRangeSeekBarListener>()
+            mListeners = ArrayList<VideoTrimmerListener>()
         }
 
         mListeners?.add(listener)
@@ -547,14 +524,12 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
     private fun notifySeekStop():Unit? = mListeners?.forEach { it.onSeekStop() }
 
     private fun notifySeekTo(){
-        thumbCursor?: return
         mListeners?.forEach {
             it.onSeek(thumbCursor.value.toLong())
         }
     }
 
     private fun notifyStartChanged(){
-        thumbLeft?: return
         mListeners?.forEach {
             it.startChanged(thumbLeft.value.toLong())
         }

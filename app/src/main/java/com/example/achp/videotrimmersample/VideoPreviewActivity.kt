@@ -10,7 +10,8 @@ import android.view.Surface
 import android.view.SurfaceHolder
 import android.widget.TextView
 import com.example.achp.videotrimmersample.components.AspectSurfaceView
-import com.example.mediatrimmer.OnRangeSeekBarListener
+import com.example.mediatrimmer.VideoTrimmer
+import com.example.mediatrimmer.VideoTrimmerListener
 import com.example.mediatrimmer.RangeSeekBarView
 import com.example.mediatrimmer.dip
 import java.io.File
@@ -21,7 +22,6 @@ class VideoPreviewActivity : AppCompatActivity(), SurfaceHolder.Callback {
     private lateinit var surfaceHolder:SurfaceHolder
     private lateinit var surface: Surface
     private lateinit var mediaPlayer: MediaPlayer
-    private lateinit var rangeSeekBar:RangeSeekBarView
 
     private lateinit var onSeekTextView:TextView
     private lateinit var startTextView:TextView
@@ -43,19 +43,25 @@ class VideoPreviewActivity : AppCompatActivity(), SurfaceHolder.Callback {
         val surfaceView = findViewById<AspectSurfaceView>(R.id.video_preview_surface_view)
         surfaceView.xRatio = 16
         surfaceView.yRatio = 9
-        rangeSeekBar = findViewById(R.id.range_seek_bar)
-        rangeSeekBar.setVideo(Uri.parse(path))
-        rangeSeekBar.timelinePaddingLeft = dip(16).toLong()
-        rangeSeekBar.timelinePaddingRight = dip(16).toLong()
-        rangeSeekBar.selectedBorderColor = ContextCompat.getColor(this, R.color.pink)
-        rangeSeekBar.selectedBorderWidth = dip(4)
-        rangeSeekBar.shadowColor = ContextCompat.getColor(this, R.color.darkshadow)
-        rangeSeekBar.shadowAlpha = 212
-        rangeSeekBar.timelineView.enableSplitter = true
-        rangeSeekBar.timelineView.imageSplitterColor = Color.BLACK
-        rangeSeekBar.timelineView.imageSplitterAlpha = 128
-        rangeSeekBar.timelineView.imageSplitterWidth = dip(1)
-        rangeSeekBar.addOnRangeSeekBarListener(object:OnRangeSeekBarListener{
+
+
+        val videoTrimmer:VideoTrimmer = findViewById(R.id.custom_viewgroup)
+        videoTrimmer.timelinePaddingLeft = dip(20)
+        videoTrimmer.timelinePaddingRight = dip(20)
+        videoTrimmer.videoSource = Uri.parse(path)
+        videoTrimmer.enableSplitter = true
+
+        videoTrimmer.splitterColor = Color.RED
+        videoTrimmer.splitterAlpha = 128
+        videoTrimmer.splitterWidth= dip(5)
+
+        videoTrimmer.selectedBorderColor = ContextCompat.getColor(this, R.color.pink)
+        videoTrimmer.selectedBorderWidth = dip(10)
+
+        videoTrimmer.shadowColor = ContextCompat.getColor(this, R.color.pink)
+        videoTrimmer.shadowAlpha = 212
+
+        videoTrimmer.addVideoTrimmerListener(object:VideoTrimmerListener{
             override fun startChanged(startTime: Long) {
                 startTextView.text = startTime.toString()
             }
