@@ -1,20 +1,15 @@
 package com.example.mediatrimmer
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.util.AttributeSet
 import android.util.LongSparseArray
 import android.view.View
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import kotlin.properties.Delegates
-
+import android.graphics.*
+import android.graphics.Bitmap
 
 class TimeLineView @JvmOverloads constructor(
         context: Context,
@@ -56,6 +51,7 @@ class TimeLineView @JvmOverloads constructor(
     var videoLengthInMs:Long?=null
         private set
 
+    var borderRadius:Int = 0
 
     init{
         //We init the imageSplitter paint
@@ -132,6 +128,12 @@ class TimeLineView @JvmOverloads constructor(
                 Bitmap.createBitmap(bitmap, 0,0,finalThumbWidth - overflowWidth, thumbHeight)
             }else{
                 Bitmap.createBitmap(bitmap, (thumbWidth/2) - (finalThumbWidth/2),0,thumbHeight, thumbHeight)
+            }
+
+            if(i==0){
+                bitmap = RoundedBitmap(bitmap,borderRadius.toFloat(), topRight = false, bottomRight = false)
+            }else if(i==numThumbs-1){
+                bitmap = RoundedBitmap(bitmap,borderRadius.toFloat(), topLeft = false, bottomLeft = false)
             }
 
             mBitmapList.put(i.toLong(), bitmap)

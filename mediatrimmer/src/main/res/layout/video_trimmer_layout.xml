@@ -8,9 +8,7 @@
     <com.example.mediatrimmer.TimeLineView
         android:id="@+id/timelineview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp" />
+        android:layout_height="match_parent" />
 
     <com.example.mediatrimmer.RangeSeekBarView
         android:id="@+id/range_seek_bar"

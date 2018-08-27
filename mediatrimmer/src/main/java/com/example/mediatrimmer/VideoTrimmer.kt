@@ -24,10 +24,35 @@ class VideoTrimmer(context: Context, attrs:AttributeSet):FrameLayout(context, at
      * From the "videoTrimmer component" point of vue, you want to change the padding
      * But actually from a framelayout point of vue, you change the margin
      */
-    var timelinePaddingLeft:Int =0
+    var timelineMarginLeft:Int =0
         set(value) {
             field = value
             (timeLineView.layoutParams as ViewGroup.MarginLayoutParams).leftMargin = value
+            rangeSeekBarView.shadowPaddingLeft = value.toLong() //TODO : toLong sux
+        }
+
+    /**
+     * This setter is used to set the space between the left of the video trimmer itself, and the left of the timeline view
+     * From the "videoTrimmer component" point of vue, you want to change the padding
+     * But actually from a framelayout point of vue, you change the margin
+     */
+    var timelineMarginRight:Int =0
+        set(value) {
+            field = value
+            (timeLineView.layoutParams as ViewGroup.MarginLayoutParams).rightMargin = value
+            rangeSeekBarView.shadowPaddingRight = value.toLong() //TODO : toLong sux
+        }
+
+
+
+    /**
+     * This setter is used to set the space between the left of the video trimmer itself, and the left of the timeline view
+     * From the "videoTrimmer component" point of vue, you want to change the padding
+     * But actually from a framelayout point of vue, you change the margin
+     */
+    var timelinePaddingLeft:Int =0
+        set(value) {
+            field = value
             rangeSeekBarView.timelinePaddingLeft = value.toLong() //TODO : toLong sux
         }
 
@@ -39,7 +64,6 @@ class VideoTrimmer(context: Context, attrs:AttributeSet):FrameLayout(context, at
     var timelinePaddingRight:Int =0
         set(value) {
             field = value
-            (timeLineView.layoutParams as ViewGroup.MarginLayoutParams).rightMargin = value
             rangeSeekBarView.timelinePaddingRight = value.toLong()
         }
 
@@ -132,6 +156,14 @@ class VideoTrimmer(context: Context, attrs:AttributeSet):FrameLayout(context, at
         set(value) {
             field=value
             rangeSeekBarView.shadowAlpha = value
+        }
+
+
+    var borderRadius: Int = 0
+        set(value) {
+            field = value
+            timeLineView.borderRadius = value
+            rangeSeekBarView.borderRadius = value
         }
 
     fun addVideoTrimmerListener(videoTrimmerListener:VideoTrimmerListener){

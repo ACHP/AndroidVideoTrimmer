@@ -65,6 +65,9 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
 
     var shadowColor:Int by Delegates.observable(Color.WHITE){ _,_,_ -> refreshShadowPaint() }
     var shadowAlpha:Int by Delegates.observable(200){ _,_,_-> refreshShadowPaint() }
+    var borderRadius:Int = 0
+    var shadowPaddingLeft:Long = 0
+    var shadowPaddingRight:Long = 0
 
     private fun refreshShadowPaint(){
         mShadow.color = shadowColor
@@ -456,16 +459,34 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
             thumbs.forEach { thumb -> when(thumb.type){
                 ThumbType.LEFT -> {
                     val x = thumb.pos + paddingLeft
-                    if (x > mPixelRangeMin) {
-                        val mRect = Rect(timelinePaddingLeft.toInt(), 0, (x + mThumbWidth).toInt(), mHeightTimeLine)
-                        canvas.drawRect(mRect, mShadow)
+                    if (x > mPixelRangeMin && shadowPaddingLeft < (x + mThumbWidth)) {
+                        val mRect = RoundedRect(
+                                shadowPaddingLeft.toFloat(),
+                                0f,
+                                x + mThumbWidth,
+                                mHeightTimeLine.toFloat(),
+                                borderRadius.toFloat(),
+                                borderRadius.toFloat(),
+                                true, false, false, true
+                        )
+                        canvas.drawPath(mRect, mShadow)
                     }
                 }
                 ThumbType.RIGHT -> {
                     val x = thumb.pos - paddingRight
-                    if (x < mPixelRangeMax) {
-                        val mRect = Rect(x.toInt(), 0, (mViewWidth - timelinePaddingLeft).toInt(), mHeightTimeLine)
-                        canvas.drawRect(mRect, mShadow)
+                    if (x < mPixelRangeMax && x < (mViewWidth - shadowPaddingRight) ) {
+
+                        val mRect = RoundedRect(
+                                x,
+                                0f,
+                                (mViewWidth - shadowPaddingRight).toFloat(),
+                                mHeightTimeLine.toFloat(),
+                                borderRadius.toFloat(),
+                                borderRadius.toFloat(),
+                                false, true, true, false
+                        )
+
+                        canvas.drawPath(mRect, mShadow)
                     }
                 }
             }}

@@ -46,20 +46,23 @@ class VideoPreviewActivity : AppCompatActivity(), SurfaceHolder.Callback {
 
 
         val videoTrimmer:VideoTrimmer = findViewById(R.id.custom_viewgroup)
+        videoTrimmer.timelineMarginLeft = dip(50)
+        videoTrimmer.timelineMarginRight = dip(50)
         videoTrimmer.timelinePaddingLeft = dip(20)
         videoTrimmer.timelinePaddingRight = dip(20)
         videoTrimmer.videoSource = Uri.parse(path)
         videoTrimmer.enableSplitter = true
 
         videoTrimmer.splitterColor = Color.RED
-        videoTrimmer.splitterAlpha = 128
+        videoTrimmer.splitterAlpha = 0
         videoTrimmer.splitterWidth= dip(5)
 
         videoTrimmer.selectedBorderColor = ContextCompat.getColor(this, R.color.pink)
-        videoTrimmer.selectedBorderWidth = dip(10)
+        videoTrimmer.selectedBorderWidth = dip(2)
 
-        videoTrimmer.shadowColor = ContextCompat.getColor(this, R.color.pink)
+        videoTrimmer.shadowColor = ContextCompat.getColor(this, R.color.darkshadow)
         videoTrimmer.shadowAlpha = 212
+        videoTrimmer.borderRadius = dip(8)
 
         videoTrimmer.addVideoTrimmerListener(object:VideoTrimmerListener{
             override fun startChanged(startTime: Long) {
