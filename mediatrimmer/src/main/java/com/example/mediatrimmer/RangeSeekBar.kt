@@ -429,7 +429,6 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
         if (thumbs.isEmpty()) { return closest}
         val threeshold = 40
 
-        print("Coordinate = $coordinate, ")
         thumbs.forEach { thumb ->
             val tcoordinate = thumb.pos + mThumbWidth
 
@@ -444,7 +443,10 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
                 closest = thumb.index
             }
         }
-        println()
+
+        if(closest==-1 && coordinate> thumbLeft.pos && coordinate < thumbRight.pos){
+            closest = thumbCursor.index
+        }
 
         return closest
     }
@@ -530,7 +532,7 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
     fun addOnRangeSeekBarListener(listener: VideoTrimmerListener) {
 
         if (mListeners == null) {
-            mListeners = ArrayList<VideoTrimmerListener>()
+            mListeners = ArrayList()
         }
 
         mListeners?.add(listener)
