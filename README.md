@@ -67,6 +67,9 @@ videoTrimmer.addVideoTrimmerListener(object:VideoTrimmerListener{
 |selectedBorderWidth|Dimension|Set the width of the borders (top & bottom) of the selected area | *1dp* |
 |shadowColor|Color|Set the color of the overlay/shadow on the non-selected area | *Color.BLACK* |
 |shadowAlpha|Integer|Set the color alpha of the overlay/shadow on the non-selected area | *128* |
+|thumbLeftDrawable|Integer|Set the drawable of the left thumb | provided image |
+|thumbRightDrawable|Integer| Set the drawable of the right thumb | provided image |
+|thumbCursorDrawable|Integer|Set the drawable of the cursor| provided image |
 
 ### Examples
 
