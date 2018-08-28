@@ -24,7 +24,7 @@ allprojects {
 Step 2. Add the dependency
 ```
 dependencies {
-  implementation 'com.github.ACHP:AndroidVideoTrimmer:v0.1-alpha'
+  implementation 'com.github.ACHP:AndroidVideoTrimmer:v0.2-alpha'
 }
 ```
 ### How to use
