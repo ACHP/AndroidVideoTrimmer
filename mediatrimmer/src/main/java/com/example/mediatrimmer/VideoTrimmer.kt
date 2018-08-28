@@ -7,17 +7,13 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
+
 class VideoTrimmer(context: Context, attrs:AttributeSet):FrameLayout(context, attrs){
 
-    var timeLineView:TimeLineView
-    var rangeSeekBarView:RangeSeekBarView
+    private var timeLineView:TimeLineView
+    private var rangeSeekBarView:RangeSeekBarView
 
-    init{
-        LayoutInflater.from(context).inflate(R.layout.video_trimmer_layout, this);
-        timeLineView= findViewById(R.id.timelineview)
-        rangeSeekBarView= findViewById(R.id.range_seek_bar)
-    }
-
+    var foo:String = "test"
 
     /**
      * This setter is used to set the space between the left of the video trimmer itself, and the left of the timeline view
@@ -171,6 +167,33 @@ class VideoTrimmer(context: Context, attrs:AttributeSet):FrameLayout(context, at
     }
 
 
+    init{
+        LayoutInflater.from(context).inflate(R.layout.video_trimmer_layout, this);
+        timeLineView= findViewById(R.id.timelineview)
+        rangeSeekBarView= findViewById(R.id.range_seek_bar)
+
+        val styledAttributes = context.obtainStyledAttributes(attrs, R.styleable.VideoTrimmer)
+
+        this.timelinePaddingRight = styledAttributes.getDimensionPixelSize(R.styleable.VideoTrimmer_timelinePaddingRight, timelinePaddingRight)
+        this.timelinePaddingLeft = styledAttributes.getDimensionPixelSize(R.styleable.VideoTrimmer_timelinePaddingLeft, timelinePaddingLeft)
+        this.timelineMarginRight = styledAttributes.getDimensionPixelSize(R.styleable.VideoTrimmer_timelineMarginRight, timelineMarginRight)
+        this.timelineMarginLeft = styledAttributes.getDimensionPixelSize(R.styleable.VideoTrimmer_timelineMarginLeft, timelineMarginLeft)
+
+        this.borderRadius = styledAttributes.getDimensionPixelSize(R.styleable.VideoTrimmer_borderRadius, borderRadius)
+
+        this.enableSplitter = styledAttributes.getBoolean(R.styleable.VideoTrimmer_enableSplitter, enableSplitter)
+        this.splitterColor = styledAttributes.getColor(R.styleable.VideoTrimmer_splitterColor, splitterColor)
+        this.splitterAlpha = styledAttributes.getInt(R.styleable.VideoTrimmer_splitterAlpha, splitterAlpha)
+        this.splitterWidth = styledAttributes.getDimensionPixelSize(R.styleable.VideoTrimmer_splitterWidth, splitterWidth)
+
+        this.selectedBorderColor = styledAttributes.getColor(R.styleable.VideoTrimmer_selectedBorderColor, selectedBorderColor)
+        this.selectedBorderWidth = styledAttributes.getDimensionPixelSize(R.styleable.VideoTrimmer_selectedBorderWidth, selectedBorderWidth)
+
+        this.shadowColor = styledAttributes.getColor(R.styleable.VideoTrimmer_shadowColor, shadowColor)
+        this.shadowAlpha = styledAttributes.getInt(R.styleable.VideoTrimmer_shadowAlpha, shadowAlpha)
+
+        styledAttributes.recycle()
+    }
 
 
 

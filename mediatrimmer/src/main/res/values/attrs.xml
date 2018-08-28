@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="VideoTrimmer">
+        <attr name="timelinePaddingRight" format="dimension"/>
+        <attr name="timelinePaddingLeft" format="dimension"/>
+        <attr name="timelineMarginRight" format="dimension"/>
+        <attr name="timelineMarginLeft" format="dimension"/>
+        <attr name="borderRadius" format="dimension"/>
+
+        <attr name="enableSplitter" format="boolean"/>
+        <attr name="splitterColor" format="color"/>
+        <attr name="splitterAlpha" format="integer"/>
+        <attr name="splitterWidth" format="dimension"/>
+
+        <attr name="selectedBorderColor" format="color"/>
+        <attr name="selectedBorderWidth" format="dimension"/>
+
+        <attr name="shadowColor" format="color"/>
+        <attr name="shadowAlpha" format="integer"/>
+    </declare-styleable>
+</resources>
