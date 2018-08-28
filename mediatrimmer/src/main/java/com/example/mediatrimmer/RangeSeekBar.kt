@@ -452,6 +452,7 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
 
+
     /**
      * Methode permettant de dessiner l'overlay sur les parties trimées de la video
      */
@@ -532,7 +533,7 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
     fun addOnRangeSeekBarListener(listener: VideoTrimmerListener) {
 
         if (mListeners == null) {
-            mListeners = ArrayList()
+            mListeners = ArrayList<VideoTrimmerListener>()
         }
 
         mListeners?.add(listener)

@@ -139,16 +139,18 @@ class VideoTrimmer(context: Context, attrs:AttributeSet):FrameLayout(context, at
     /**
      * Set the shadowColor for the non-selected area
      */
-    var shadowColor: Int = dip(1)
+    var shadowColor: Int = Color.BLACK
         set(value) {
             field=value
             rangeSeekBarView.shadowColor = value
         }
 
+
+
     /**
      * Set the shadowAlpha for the non-selected area
      */
-    var shadowAlpha: Int = dip(1)
+    var shadowAlpha: Int = 128
         set(value) {
             field=value
             rangeSeekBarView.shadowAlpha = value
@@ -161,6 +163,23 @@ class VideoTrimmer(context: Context, attrs:AttributeSet):FrameLayout(context, at
             timeLineView.borderRadius = value
             rangeSeekBarView.borderRadius = value
         }
+
+    var thumbLeft: Thumb?=null
+        get() {
+            return rangeSeekBarView.thumbLeft
+        }
+
+    var thumbRight: Thumb?=null
+        get() {
+            return rangeSeekBarView.thumbRight
+        }
+
+    var thumbCursor: Thumb?=null
+        get() {
+            return rangeSeekBarView.thumbCursor
+        }
+
+
 
     fun addVideoTrimmerListener(videoTrimmerListener:VideoTrimmerListener){
         rangeSeekBarView.addOnRangeSeekBarListener(videoTrimmerListener)
@@ -192,9 +211,20 @@ class VideoTrimmer(context: Context, attrs:AttributeSet):FrameLayout(context, at
         this.shadowColor = styledAttributes.getColor(R.styleable.VideoTrimmer_shadowColor, shadowColor)
         this.shadowAlpha = styledAttributes.getInt(R.styleable.VideoTrimmer_shadowAlpha, shadowAlpha)
 
+//        this.backColor = styledAttributes.getColor(R.styleable.VideoTrimmer_backColor, backColor)
+
+        val leftDrawable = styledAttributes.getDrawable(R.styleable.VideoTrimmer_thumbLeftDrawable)
+        if(leftDrawable!=null){ thumbLeft?.setDrawable(leftDrawable) }
+
+        val rightDrawable = styledAttributes.getDrawable(R.styleable.VideoTrimmer_thumbRightDrawable)
+        if(rightDrawable!=null){ thumbRight?.setDrawable(rightDrawable) }
+
+        val cursorDrawable = styledAttributes.getDrawable(R.styleable.VideoTrimmer_thumbCursorDrawable)
+        if(cursorDrawable!=null){ thumbCursor?.setDrawable(cursorDrawable) }
+
+
         styledAttributes.recycle()
     }
-
 
 
 }

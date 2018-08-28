@@ -92,6 +92,9 @@ class Thumb {
         this.bitmap = drawableToBitmap(resources.getDrawable(drawable, null))
     }
 
+    fun setDrawable(drawable:Drawable){
+        this.bitmap = drawableToBitmap(drawable)
+    }
 
     companion object {
 

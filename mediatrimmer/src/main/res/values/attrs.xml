@@ -17,5 +17,11 @@
 
         <attr name="shadowColor" format="color"/>
         <attr name="shadowAlpha" format="integer"/>
+
+        <attr name="thumbLeftDrawable" format="integer"/>
+        <attr name="thumbRightDrawable" format="integer"/>
+        <attr name="thumbCursorDrawable" format="integer"/>
+
+
     </declare-styleable>
 </resources>
