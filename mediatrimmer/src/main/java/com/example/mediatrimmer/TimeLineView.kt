@@ -137,8 +137,6 @@ class TimeLineView @JvmOverloads constructor(
             }
 
             mBitmapList.put(i.toLong(), bitmap)
-
-            println("postInvalidate")
             postInvalidate()
 
         }
@@ -166,8 +164,7 @@ class TimeLineView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        println("ON DRAW !! left :$left")
-//        canvas.save()
+        canvas.save()
         var x = 0
 
         for (i in 0 until mBitmapList.size()) {
